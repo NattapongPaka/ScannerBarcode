@@ -242,37 +242,39 @@ public class ScanFragment extends Fragment implements SurfaceHolder.Callback, Ac
             BarcodeScanner.MWBsetDirection(BarcodeScanner.MWB_SCANDIRECTION_HORIZONTAL | BarcodeScanner.MWB_SCANDIRECTION_VERTICAL);
             // Our sample app is configured by default to search all supported
             // barcodes...
-            BarcodeScanner.MWBsetActiveCodes(
-                      BarcodeScanner.MWB_CODE_MASK_25
-                    | BarcodeScanner.MWB_CODE_MASK_39
-                    | BarcodeScanner.MWB_CODE_MASK_93
-                    | BarcodeScanner.MWB_CODE_MASK_128
-                    | BarcodeScanner.MWB_CODE_MASK_AZTEC
-                    | BarcodeScanner.MWB_CODE_MASK_DM
-                    | BarcodeScanner.MWB_CODE_MASK_EANUPC
-                    | BarcodeScanner.MWB_CODE_MASK_PDF
-                    | BarcodeScanner.MWB_CODE_MASK_QR
-                    | BarcodeScanner.MWB_CODE_MASK_CODABAR
-                    | BarcodeScanner.MWB_CODE_MASK_11
-                    | BarcodeScanner.MWB_CODE_MASK_MSI
-                    | BarcodeScanner.MWB_CODE_MASK_RSS);
+            int status = BarcodeScanner.MWBsetActiveCodes(
+//                      BarcodeScanner.MWB_CODE_MASK_25
+//                    | BarcodeScanner.MWB_CODE_MASK_39
+//                    | BarcodeScanner.MWB_CODE_MASK_93
+//                    | BarcodeScanner.MWB_CODE_MASK_128
+//                    | BarcodeScanner.MWB_CODE_MASK_AZTEC
+//                    | BarcodeScanner.MWB_CODE_MASK_DM
+                    BarcodeScanner.MWB_CODE_MASK_EANUPC
+//                    | BarcodeScanner.MWB_CODE_MASK_PDF
+//                    | BarcodeScanner.MWB_CODE_MASK_QR
+//                    | BarcodeScanner.MWB_CODE_MASK_CODABAR
+//                    | BarcodeScanner.MWB_CODE_MASK_11
+//                    | BarcodeScanner.MWB_CODE_MASK_MSI
+//                    | BarcodeScanner.MWB_CODE_MASK_RSS
+            );
+
 
             // set the scanning rectangle based on scan direction(format in pct:
             // x, y, width, height)
-            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_25, RECT_FULL_1D);
-            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_39, RECT_FULL_1D);
-            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_93, RECT_FULL_1D);
-            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_128, RECT_FULL_1D);
-            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_AZTEC, RECT_FULL_2D);
-            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_DM, RECT_FULL_2D);
+//            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_25, RECT_FULL_1D);
+//            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_39, RECT_FULL_1D);
+//            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_93, RECT_FULL_1D);
+//            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_128, RECT_FULL_1D);
+//            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_AZTEC, RECT_FULL_2D);
+//            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_DM, RECT_FULL_2D);
             BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_EANUPC, RECT_FULL_1D);
-            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_PDF, RECT_FULL_1D);
-            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_QR, RECT_FULL_2D);
-            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_RSS, RECT_FULL_1D);
-            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_CODABAR, RECT_FULL_1D);
-            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_DOTCODE, RECT_DOTCODE);
-            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_11, RECT_FULL_1D);
-            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_MSI, RECT_FULL_1D);
+//            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_PDF, RECT_FULL_1D);
+//            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_QR, RECT_FULL_2D);
+//            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_RSS, RECT_FULL_1D);
+//            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_CODABAR, RECT_FULL_1D);
+//            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_DOTCODE, RECT_DOTCODE);
+//            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_11, RECT_FULL_1D);
+//            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_MSI, RECT_FULL_1D);
 
         }
 
@@ -298,20 +300,19 @@ public class ScanFragment extends Fragment implements SurfaceHolder.Callback, Ac
         // BarcodeScanner.MWBsetActiveCodes( BarcodeScanner.MWB_CODE_MASK_128 );
         // BarcodeScanner.MWBsetActiveCodes( BarcodeScanner.MWB_CODE_MASK_AZTEC
         // );
-        // BarcodeScanner.MWBsetActiveCodes( BarcodeScanner.MWB_CODE_MASK_EANUPC
-        // );
+        BarcodeScanner.MWBsetActiveCodes( BarcodeScanner.MWB_CODE_MASK_EANUPC);
+
         // BarcodeScanner.MWBsetActiveCodes( BarcodeScanner.MWB_CODE_MASK_PDF );
         // BarcodeScanner.MWBsetActiveCodes( BarcodeScanner.MWB_CODE_MASK_QR );
         // BarcodeScanner.MWBsetActiveCodes( BarcodeScanner.MWB_CODE_MASK_RSS );
-        // BarcodeScanner.MWBsetActiveCodes(
-        // BarcodeScanner.MWB_CODE_MASK_CODABAR );
+        // BarcodeScanner.MWBsetActiveCodes(BarcodeScanner.MWB_CODE_MASK_CODABAR );
         // BarcodeScanner.MWBsetActiveCodes(
         // BarcodeScanner.MWB_CODE_MASK_DOTCODE );
         // BarcodeScanner.MWBsetActiveCodes( BarcodeScanner.MWB_CODE_MASK_11 );
         // BarcodeScanner.MWBsetActiveCodes( BarcodeScanner.MWB_CODE_MASK_MSI );
 
         // But for better performance, set like this for PORTRAIT scanning...
-        // BarcodeScanner.MWBsetDirection(BarcodeScanner.MWB_SCANDIRECTION_VERTICAL);
+        //BarcodeScanner.MWBsetDirection(BarcodeScanner.MWB_SCANDIRECTION_VERTICAL);
         // set the scanning rectangle based on scan direction(format in pct: x,
         // y, width, height)
         // BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_25,
@@ -326,8 +327,7 @@ public class ScanFragment extends Fragment implements SurfaceHolder.Callback, Ac
         // RECT_PORTRAIT_2D);
         // BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_DM,
         // RECT_PORTRAIT_2D);
-        // BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_EANUPC,
-        // RECT_PORTRAIT_1D);
+        // BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_EANUPC, RECT_PORTRAIT_1D);
         // BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_PDF,
         // RECT_PORTRAIT_1D);
         // BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_QR,
@@ -343,7 +343,7 @@ public class ScanFragment extends Fragment implements SurfaceHolder.Callback, Ac
 
         // or like this for LANDSCAPE scanning - Preferred for dense or wide
         // codes...
-        // BarcodeScanner.MWBsetDirection(BarcodeScanner.MWB_SCANDIRECTION_HORIZONTAL);
+        //BarcodeScanner.MWBsetDirection(BarcodeScanner.MWB_SCANDIRECTION_HORIZONTAL);
         // set the scanning rectangle based on scan direction(format in pct: x,
         // y, width, height)
         // BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_25,
@@ -358,8 +358,7 @@ public class ScanFragment extends Fragment implements SurfaceHolder.Callback, Ac
         // RECT_LANDSCAPE_2D);
         // BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_DM,
         // RECT_LANDSCAPE_2D);
-        // BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_EANUPC,
-        // RECT_LANDSCAPE_1D);
+        // BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_EANUPC, RECT_LANDSCAPE_1D);
         // BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_PDF,
         // RECT_LANDSCAPE_1D);
         // BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_QR,
@@ -447,8 +446,8 @@ public class ScanFragment extends Fragment implements SurfaceHolder.Callback, Ac
                         // fails,
                         // start another.
                         // state = State.PREVIEW;
-                        // CameraManager.get().requestPreviewFrame(decodeThread.getHandler(),
-                        // R.id.decode);
+                        //CameraManager.get().requestPreviewFrame(decodeThread.getHandler(),
+                        //R.id.decode);
                         break;
 
                 }
