@@ -40,7 +40,7 @@ import static android.content.Context.WINDOW_SERVICE;
  * Created by nattapongpaka on 3/21/2017 AD.
  */
 
-public class ScanFragment extends Fragment implements SurfaceHolder.Callback, ActivityCompat.OnRequestPermissionsResultCallback {
+public class ScanBarcodeManateeFragment extends Fragment implements SurfaceHolder.Callback, ActivityCompat.OnRequestPermissionsResultCallback {
 
     private SurfaceView surfaceView;
     private ImageView imageOverlay;
@@ -134,8 +134,8 @@ public class ScanFragment extends Fragment implements SurfaceHolder.Callback, Ac
         return decodeHandler;
     }
 
-    public static ScanFragment newInstance() {
-        return new ScanFragment();
+    public static ScanBarcodeManateeFragment newInstance() {
+        return new ScanBarcodeManateeFragment();
     }
 
     /**
@@ -258,7 +258,6 @@ public class ScanFragment extends Fragment implements SurfaceHolder.Callback, Ac
 //                    | BarcodeScanner.MWB_CODE_MASK_RSS
             );
 
-
             // set the scanning rectangle based on scan direction(format in pct:
             // x, y, width, height)
 //            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_25, RECT_FULL_1D);
@@ -300,7 +299,7 @@ public class ScanFragment extends Fragment implements SurfaceHolder.Callback, Ac
         // BarcodeScanner.MWBsetActiveCodes( BarcodeScanner.MWB_CODE_MASK_128 );
         // BarcodeScanner.MWBsetActiveCodes( BarcodeScanner.MWB_CODE_MASK_AZTEC
         // );
-        BarcodeScanner.MWBsetActiveCodes( BarcodeScanner.MWB_CODE_MASK_EANUPC);
+        BarcodeScanner.MWBsetActiveCodes(BarcodeScanner.MWB_CODE_MASK_EANUPC);
 
         // BarcodeScanner.MWBsetActiveCodes( BarcodeScanner.MWB_CODE_MASK_PDF );
         // BarcodeScanner.MWBsetActiveCodes( BarcodeScanner.MWB_CODE_MASK_QR );
@@ -379,11 +378,13 @@ public class ScanFragment extends Fragment implements SurfaceHolder.Callback, Ac
         BarcodeScanner.MWBsetResultType(USE_RESULT_TYPE);
 
         // Set minimum result length for low-protected barcode types
-        BarcodeScanner.MWBsetMinLength(BarcodeScanner.MWB_CODE_MASK_25, 5);
-        BarcodeScanner.MWBsetMinLength(BarcodeScanner.MWB_CODE_MASK_MSI, 5);
-        BarcodeScanner.MWBsetMinLength(BarcodeScanner.MWB_CODE_MASK_39, 5);
-        BarcodeScanner.MWBsetMinLength(BarcodeScanner.MWB_CODE_MASK_CODABAR, 5);
-        BarcodeScanner.MWBsetMinLength(BarcodeScanner.MWB_CODE_MASK_11, 5);
+//        BarcodeScanner.MWBsetMinLength(BarcodeScanner.MWB_CODE_MASK_25, 5);
+//        BarcodeScanner.MWBsetMinLength(BarcodeScanner.MWB_CODE_MASK_MSI, 5);
+//        BarcodeScanner.MWBsetMinLength(BarcodeScanner.MWB_CODE_MASK_39, 5);
+//        BarcodeScanner.MWBsetMinLength(BarcodeScanner.MWB_CODE_MASK_CODABAR, 5);
+//        BarcodeScanner.MWBsetMinLength(BarcodeScanner.MWB_CODE_MASK_11, 5);
+
+        BarcodeScanner.MWBsetMinLength(BarcodeScanner.MWB_CODE_MASK_EANUPC, 2);
 
         // Set adittional options for GS1 and ECI
         // BarcodeScanner.MWBsetParam(BarcodeScanner.MWB_CODE_MASK_DM,
@@ -694,7 +695,7 @@ public class ScanFragment extends Fragment implements SurfaceHolder.Callback, Ac
                 // height);
 
                 byte[] rawResult = null;
-				/*
+                /*
 				 * if (Global.mode_39) rawResult =
 				 * BarcodeScanner.decode39(source, w, h); else rawResult =
 				 * BarcodeScanner.decodeDM(source, w, h);
@@ -778,8 +779,9 @@ public class ScanFragment extends Fragment implements SurfaceHolder.Callback, Ac
         } catch (UnsupportedEncodingException e) {
 
             s = "";
-            for (int i = 0; i < rawResult.length; i++)
+            for (int i = 0; i < rawResult.length; i++) {
                 s = s + (char) rawResult[i];
+            }
             e.printStackTrace();
         }
 		/* Parser */

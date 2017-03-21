@@ -16,7 +16,7 @@ public class ScanActivity extends AppCompatActivity {
         setContentView(R.layout.activity_scan);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.promosScanBarcodeContainer, ScanFragment.newInstance(), ScanFragment.class.getSimpleName())
+                    .add(R.id.promosScanBarcodeContainer, ScanBarcodeManateeFragment.newInstance(), ScanBarcodeManateeFragment.class.getSimpleName())
                     .commit();
         }
     }
