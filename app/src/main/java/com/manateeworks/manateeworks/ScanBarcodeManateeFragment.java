@@ -11,6 +11,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -257,6 +258,7 @@ public class ScanBarcodeManateeFragment extends Fragment implements SurfaceHolde
 //                    | BarcodeScanner.MWB_CODE_MASK_MSI
 //                    | BarcodeScanner.MWB_CODE_MASK_RSS
             );
+            Log.d("Status",String.valueOf(status));
 
             // set the scanning rectangle based on scan direction(format in pct:
             // x, y, width, height)
@@ -274,7 +276,6 @@ public class ScanBarcodeManateeFragment extends Fragment implements SurfaceHolde
 //            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_DOTCODE, RECT_DOTCODE);
 //            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_11, RECT_FULL_1D);
 //            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_MSI, RECT_FULL_1D);
-
         }
 
         if (OVERLAY_MODE == OverlayMode.OM_IMAGE) {
@@ -374,7 +375,7 @@ public class ScanBarcodeManateeFragment extends Fragment implements SurfaceHolde
         // set decoder effort level (1 - 5)
         // for live scanning scenarios, a setting between 1 to 3 will suffice
         // levels 4 and 5 are typically reserved for batch scanning
-        BarcodeScanner.MWBsetLevel(3);
+        BarcodeScanner.MWBsetLevel(5);
         BarcodeScanner.MWBsetResultType(USE_RESULT_TYPE);
 
         // Set minimum result length for low-protected barcode types
@@ -383,8 +384,7 @@ public class ScanBarcodeManateeFragment extends Fragment implements SurfaceHolde
 //        BarcodeScanner.MWBsetMinLength(BarcodeScanner.MWB_CODE_MASK_39, 5);
 //        BarcodeScanner.MWBsetMinLength(BarcodeScanner.MWB_CODE_MASK_CODABAR, 5);
 //        BarcodeScanner.MWBsetMinLength(BarcodeScanner.MWB_CODE_MASK_11, 5);
-
-        BarcodeScanner.MWBsetMinLength(BarcodeScanner.MWB_CODE_MASK_EANUPC, 2);
+        BarcodeScanner.MWBsetMinLength(BarcodeScanner.MWB_CODE_MASK_EANUPC, 5);
 
         // Set adittional options for GS1 and ECI
         // BarcodeScanner.MWBsetParam(BarcodeScanner.MWB_CODE_MASK_DM,
