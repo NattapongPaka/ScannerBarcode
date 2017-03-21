@@ -11,7 +11,6 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -168,8 +167,7 @@ public class ScanBarcodeManateeFragment extends Fragment implements SurfaceHolde
         CameraManager.get().closeDriver();
         state = State.STOPPED;
         flashOn = false;
-        //updateFlash();
-
+        updateFlash();
     }
 
     @Nullable
@@ -241,6 +239,7 @@ public class ScanBarcodeManateeFragment extends Fragment implements SurfaceHolde
             // Our sample app is configured by default to search both
             // directions...
             BarcodeScanner.MWBsetDirection(BarcodeScanner.MWB_SCANDIRECTION_HORIZONTAL | BarcodeScanner.MWB_SCANDIRECTION_VERTICAL);
+            //BarcodeScanner.MWBsetDirection(BarcodeScanner.MWB_SCANDIRECTION_OMNI);
             // Our sample app is configured by default to search all supported
             // barcodes...
             int status = BarcodeScanner.MWBsetActiveCodes(
@@ -258,24 +257,32 @@ public class ScanBarcodeManateeFragment extends Fragment implements SurfaceHolde
 //                    | BarcodeScanner.MWB_CODE_MASK_MSI
 //                    | BarcodeScanner.MWB_CODE_MASK_RSS
             );
-            Log.d("Status",String.valueOf(status));
+
+            if(status == BarcodeScanner.MWB_RT_OK){
+                BarcodeScanner.MWBsetActiveSubcodes(BarcodeScanner.MWB_CODE_MASK_EANUPC,
+                        BarcodeScanner.MWB_SUBC_MASK_EANUPC_EAN_13
+                                | BarcodeScanner.MWB_SUBC_MASK_EANUPC_EAN_8
+                                | BarcodeScanner.MWB_SUBC_MASK_EANUPC_UPC_A
+                                | BarcodeScanner.MWB_SUBC_MASK_EANUPC_UPC_E
+                                | BarcodeScanner.MWB_SUBC_MASK_EANUPC_UPC_E1);
+            }
 
             // set the scanning rectangle based on scan direction(format in pct:
             // x, y, width, height)
-//            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_25, RECT_FULL_1D);
-//            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_39, RECT_FULL_1D);
-//            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_93, RECT_FULL_1D);
-//            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_128, RECT_FULL_1D);
-//            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_AZTEC, RECT_FULL_2D);
-//            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_DM, RECT_FULL_2D);
+            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_25, RECT_FULL_1D);
+            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_39, RECT_FULL_1D);
+            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_93, RECT_FULL_1D);
+            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_128, RECT_FULL_1D);
+            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_AZTEC, RECT_FULL_2D);
+            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_DM, RECT_FULL_2D);
             BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_EANUPC, RECT_FULL_1D);
-//            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_PDF, RECT_FULL_1D);
-//            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_QR, RECT_FULL_2D);
-//            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_RSS, RECT_FULL_1D);
-//            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_CODABAR, RECT_FULL_1D);
-//            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_DOTCODE, RECT_DOTCODE);
-//            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_11, RECT_FULL_1D);
-//            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_MSI, RECT_FULL_1D);
+            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_PDF, RECT_FULL_1D);
+            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_QR, RECT_FULL_2D);
+            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_RSS, RECT_FULL_1D);
+            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_CODABAR, RECT_FULL_1D);
+            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_DOTCODE, RECT_DOTCODE);
+            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_11, RECT_FULL_1D);
+            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_MSI, RECT_FULL_1D);
         }
 
         if (OVERLAY_MODE == OverlayMode.OM_IMAGE) {
@@ -300,7 +307,7 @@ public class ScanBarcodeManateeFragment extends Fragment implements SurfaceHolde
         // BarcodeScanner.MWBsetActiveCodes( BarcodeScanner.MWB_CODE_MASK_128 );
         // BarcodeScanner.MWBsetActiveCodes( BarcodeScanner.MWB_CODE_MASK_AZTEC
         // );
-        BarcodeScanner.MWBsetActiveCodes(BarcodeScanner.MWB_CODE_MASK_EANUPC);
+        //BarcodeScanner.MWBsetActiveCodes(BarcodeScanner.MWB_CODE_MASK_EANUPC);
 
         // BarcodeScanner.MWBsetActiveCodes( BarcodeScanner.MWB_CODE_MASK_PDF );
         // BarcodeScanner.MWBsetActiveCodes( BarcodeScanner.MWB_CODE_MASK_QR );
@@ -375,7 +382,7 @@ public class ScanBarcodeManateeFragment extends Fragment implements SurfaceHolde
         // set decoder effort level (1 - 5)
         // for live scanning scenarios, a setting between 1 to 3 will suffice
         // levels 4 and 5 are typically reserved for batch scanning
-        BarcodeScanner.MWBsetLevel(5);
+        BarcodeScanner.MWBsetLevel(3);
         BarcodeScanner.MWBsetResultType(USE_RESULT_TYPE);
 
         // Set minimum result length for low-protected barcode types
@@ -384,7 +391,7 @@ public class ScanBarcodeManateeFragment extends Fragment implements SurfaceHolde
 //        BarcodeScanner.MWBsetMinLength(BarcodeScanner.MWB_CODE_MASK_39, 5);
 //        BarcodeScanner.MWBsetMinLength(BarcodeScanner.MWB_CODE_MASK_CODABAR, 5);
 //        BarcodeScanner.MWBsetMinLength(BarcodeScanner.MWB_CODE_MASK_11, 5);
-        BarcodeScanner.MWBsetMinLength(BarcodeScanner.MWB_CODE_MASK_EANUPC, 5);
+        BarcodeScanner.MWBsetMinLength(BarcodeScanner.MWB_CODE_MASK_EANUPC, 13);
 
         // Set adittional options for GS1 and ECI
         // BarcodeScanner.MWBsetParam(BarcodeScanner.MWB_CODE_MASK_DM,
@@ -632,7 +639,7 @@ public class ScanBarcodeManateeFragment extends Fragment implements SurfaceHolde
                 }, 300);
                 CameraManager.get().startPreview();
                 restartPreviewAndDecode();
-                //updateFlash();
+                updateFlash();
             }
         }
     }
@@ -659,24 +666,24 @@ public class ScanBarcodeManateeFragment extends Fragment implements SurfaceHolde
         }
     }
 
-//    private void updateFlash() {
-//        if (!CameraManager.get().isTorchAvailable()) {
-//            buttonFlash.setVisibility(View.GONE);
-//            return;
-//
-//        } else {
-//            buttonFlash.setVisibility(View.VISIBLE);
-//        }
-//
-//        if (flashOn) {
-//            buttonFlash.setImageResource(R.drawable.flashbuttonon);
-//        } else {
-//            buttonFlash.setImageResource(R.drawable.flashbuttonoff);
-//        }
-//
-//        CameraManager.get().setTorch(flashOn);
-//        buttonFlash.postInvalidate();
-//    }
+    private void updateFlash() {
+        if (!CameraManager.get().isTorchAvailable()) {
+            buttonFlash.setVisibility(View.GONE);
+            return;
+
+        } else {
+            buttonFlash.setVisibility(View.VISIBLE);
+        }
+
+        if (flashOn) {
+            buttonFlash.setImageResource(R.drawable.flashbuttonon);
+        } else {
+            buttonFlash.setImageResource(R.drawable.flashbuttonoff);
+        }
+
+        CameraManager.get().setTorch(flashOn);
+        buttonFlash.postInvalidate();
+    }
 
     private void decode(final byte[] data, final int width, final int height) {
 
