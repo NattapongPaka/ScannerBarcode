@@ -3,11 +3,15 @@ package com.manateeworks.manateeworks;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.graphics.Path;
 import android.graphics.Rect;
+import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,8 +19,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -26,6 +32,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.manateeworks.BarcodeScanner;
 import com.manateeworks.CameraManager;
@@ -68,7 +75,7 @@ public class ScanBarcodeManateeFragment extends Fragment implements SurfaceHolde
     public static final Rect RECT_LANDSCAPE_2D = new Rect(20, 5, 60, 90);
     public static final Rect RECT_PORTRAIT_1D = new Rect(20, 3, 60, 94);
     public static final Rect RECT_PORTRAIT_2D = new Rect(20, 5, 60, 90);
-    public static final Rect RECT_FULL_1D = new Rect(3, 3, 94, 94);
+    public static final Rect RECT_FULL_1D = new Rect(3, 3, 94, 94);//public static final Rect RECT_FULL_1D = new Rect(3, 3, 94, 94);
     public static final Rect RECT_FULL_2D = new Rect(20, 5, 60, 90);
     public static final Rect RECT_DOTCODE = new Rect(30, 20, 40, 60);
 
@@ -110,7 +117,7 @@ public class ScanBarcodeManateeFragment extends Fragment implements SurfaceHolde
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        Log.i("Init Camera", "On Surface changed");
+        Log.i("Init Camera", "On Surface changed Format:"+String.valueOf(format)+" W:"+String.valueOf(width)+" H:"+String.valueOf(height));
         initCamera();
         surfaceChanged = true;
     }
@@ -141,7 +148,6 @@ public class ScanBarcodeManateeFragment extends Fragment implements SurfaceHolde
     /**
      * Activity life cycle
      */
-
     @Override
     public void onConfigurationChanged(Configuration config) {
         Display display = ((WindowManager) getActivity().getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
@@ -162,7 +168,6 @@ public class ScanBarcodeManateeFragment extends Fragment implements SurfaceHolde
         if (OVERLAY_MODE == OverlayMode.OM_MWOVERLAY) {
             MWOverlay.removeOverlay();
         }
-
         CameraManager.get().stopPreview();
         CameraManager.get().closeDriver();
         state = State.STOPPED;
@@ -223,7 +228,6 @@ public class ScanBarcodeManateeFragment extends Fragment implements SurfaceHolde
             case BarcodeScanner.MWB_RTREG_KEY_EXPIRED:
                 Log.e("MWBregisterSDK", "Registration Key Expired");
                 break;
-
             default:
                 Log.e("MWBregisterSDK", "Registration Unknown Error");
                 break;
@@ -260,7 +264,7 @@ public class ScanBarcodeManateeFragment extends Fragment implements SurfaceHolde
 
             if(status == BarcodeScanner.MWB_RT_OK){
                 BarcodeScanner.MWBsetActiveSubcodes(BarcodeScanner.MWB_CODE_MASK_EANUPC,
-                        BarcodeScanner.MWB_SUBC_MASK_EANUPC_EAN_13
+                                  BarcodeScanner.MWB_SUBC_MASK_EANUPC_EAN_13
                                 | BarcodeScanner.MWB_SUBC_MASK_EANUPC_EAN_8
                                 | BarcodeScanner.MWB_SUBC_MASK_EANUPC_UPC_A
                                 | BarcodeScanner.MWB_SUBC_MASK_EANUPC_UPC_E
@@ -273,21 +277,21 @@ public class ScanBarcodeManateeFragment extends Fragment implements SurfaceHolde
             BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_39, RECT_FULL_1D);
             BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_93, RECT_FULL_1D);
             BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_128, RECT_FULL_1D);
-            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_AZTEC, RECT_FULL_2D);
-            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_DM, RECT_FULL_2D);
             BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_EANUPC, RECT_FULL_1D);
             BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_PDF, RECT_FULL_1D);
-            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_QR, RECT_FULL_2D);
             BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_RSS, RECT_FULL_1D);
             BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_CODABAR, RECT_FULL_1D);
-            BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_DOTCODE, RECT_DOTCODE);
             BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_11, RECT_FULL_1D);
             BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_MSI, RECT_FULL_1D);
+            //BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_AZTEC, RECT_FULL_2D);
+            //BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_DM, RECT_FULL_2D);
+            //BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_QR, RECT_FULL_2D);
+            //BarcodeScanner.MWBsetScanningRect(BarcodeScanner.MWB_CODE_MASK_DOTCODE, RECT_DOTCODE);
         }
 
         if (OVERLAY_MODE == OverlayMode.OM_IMAGE) {
             //ImageView imageOverlay = (ImageView) findViewById(R.id.imageOverlay);
-            imageOverlay.setVisibility(View.VISIBLE);
+            //imageOverlay.setVisibility(View.VISIBLE);
         }
 
 		/* Analytics */
@@ -409,7 +413,6 @@ public class ScanBarcodeManateeFragment extends Fragment implements SurfaceHolde
 
         // BarcodeScanner.MWBsetFlags(BarcodeScanner.MWB_CODE_MASK_EANUPC,
         // BarcodeScanner.MWB_CFG_EANUPC_DISABLE_ADDON);
-
         CameraManager.init(getActivity().getApplication());
 
         hasSurface = false;
@@ -503,9 +506,14 @@ public class ScanBarcodeManateeFragment extends Fragment implements SurfaceHolde
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initOnCreate();
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initOnCreate();
     }
 
     @Override
@@ -532,6 +540,19 @@ public class ScanBarcodeManateeFragment extends Fragment implements SurfaceHolde
             initCamera();
             // }
         } else {
+            // Set size
+
+//            ViewGroup.LayoutParams params = surfaceView.getLayoutParams();
+//            RelativeLayout relativeLayout = new RelativeLayout(getContext());
+//            relativeLayout.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+//            relativeLayout.setGravity(Gravity.CENTER);
+//            relativeLayout.setPadding(10,10,10,10);
+
+            //params.height = (int) convertDpToPixel(640,getContext());
+            //params.width = (int) convertDpToPixel(480,getContext());
+            //surfaceView.setLayoutParams();
+            //surfaceHolder.setFixedSize(640,480);
+
             // Install the callback and wait for surfaceCreated() to init the
             // camera.
             surfaceHolder.addCallback(this);
@@ -546,6 +567,30 @@ public class ScanBarcodeManateeFragment extends Fragment implements SurfaceHolde
         String libVersion = "Lib version: " + String.valueOf(v1) + "." + String.valueOf(v2) + "." + String.valueOf(v3);
         Log.d(ActivityCapture.class.getSimpleName(), libVersion);
     }
+
+    public float convertDpToPixel(float dp, Context context){
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float px = dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return px;
+    }
+
+//    void update_surface(SurfaceView surfaceView, int current_height,int current_width) {
+//        if (hasSurface == false){
+//
+//            // CALCULATE ASPECTED RATIO ACCORDING TO ABOVE HEIGHT AND WIDTH.
+//            int calculated_height = current_height/2;
+//            int calculated_width = current_width /2;
+//            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(calculated_height, calculated_width);
+//            lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+//
+//            ViewGroup.LayoutParams layoutParams = surfaceView.getLayoutParams();
+//
+//            surfaceView.setLayoutParams(lp);
+//            surfaceView.setVisibility(View.VISIBLE);
+//            hasSurface = true;
+//        }
+//    }
 
     private void initCamera() {
         if (!getActivity().isFinishing()) {
@@ -602,6 +647,7 @@ public class ScanBarcodeManateeFragment extends Fragment implements SurfaceHolde
                             firstZoom = (maxZoom - 100) / 2 + 100;
                         }
                     }
+
                 } catch (IOException ioe) {
                     displayFrameworkBugMessageAndExit(ioe.getMessage());
                     return;
@@ -637,6 +683,7 @@ public class ScanBarcodeManateeFragment extends Fragment implements SurfaceHolde
                         }
                     }
                 }, 300);
+
                 CameraManager.get().startPreview();
                 restartPreviewAndDecode();
                 updateFlash();
@@ -891,14 +938,13 @@ public class ScanBarcodeManateeFragment extends Fragment implements SurfaceHolde
                 getActivity().setResult(Activity.RESULT_OK, returnIntent);
                 getActivity().finish();
             } else {
-
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("type", typeName);
                 returnIntent.putExtra("code", s);
                 getActivity().setResult(Activity.RESULT_OK, returnIntent);
                 getActivity().finish();
-
             }
+
 //			new AlertDialog.Builder(this)
 //					.setTitle(typeName)
 //					.setMessage(s)
